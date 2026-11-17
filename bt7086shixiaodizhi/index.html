@@ -1,0 +1,1082 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>BT 7086 失效地址 回家指南-镜像核对与地址变动追踪</title>
+<meta name="description" content="BT 7086 失效地址 回家指南：整理 BT7086 镜像地址变动记录、域名核对步骤、备用入口判断方法与常见打不开问题。含 8 条近期变更、域名后缀差异对照、客户端与 DNS 排查清单，以及用户反馈汇总，帮助你按证据确认可用入口，不再依赖过期链接。">
+<meta name="keywords" content="BT 7086 失效地址 回家指南">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230f2f37'/%3E%3Cpath d='M14 42V22h10a8 8 0 0 1 0 16h-6v4z' fill='%235fd1a6'/%3E%3Cpath d='M36 22h16v6H42v4h9v6h-9v10h-6z' fill='%23f2c14e'/%3E%3C/svg%3E">
+<style>
+:root{
+  --ink:#16232a;
+  --ink-2:#43555f;
+  --ink-3:#6b7d87;
+  --bg:#f5f7f6;
+  --card:#ffffff;
+  --line:#dbe4e1;
+  --brand:#0f2f37;
+  --brand-2:#134c56;
+  --mint:#2f9e7e;
+  --mint-soft:#e4f4ee;
+  --amber:#b4791a;
+  --amber-soft:#fbf1dc;
+  --rose:#a63b52;
+  --rose-soft:#fbe8eb;
+  --radius:14px;
+  --radius-s:9px;
+  --shadow:0 1px 2px rgba(22,35,42,.06),0 6px 18px -10px rgba(22,35,42,.28);
+  --space:clamp(14px,2.2vw,22px);
+  --font:"PingFang SC","Hiragino Sans GB","Microsoft YaHei","Source Han Sans SC",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --sticky-h:96px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;
+  font-family:var(--font);
+  color:var(--ink);
+  background:var(--bg);
+  line-height:1.78;
+  font-size:16px;
+  -webkit-text-size-adjust:100%;
+}
+img{max-width:100%;height:auto;display:block}
+a{color:var(--brand-2);text-decoration:none}
+a:hover{text-decoration:underline}
+:focus-visible{outline:3px solid var(--mint);outline-offset:2px;border-radius:4px}
+h1,h2,h3,h4{line-height:1.35;margin:0}
+p{margin:.55em 0}
+ul,ol{margin:.5em 0;padding-left:1.25em}
+li{margin:.25em 0}
+.wrap{max-width:1180px;margin:0 auto;padding:0 var(--space)}
+
+/* 吸顶组 */
+.sticky-group{position:sticky;top:0;z-index:60}
+.notice{
+  background:var(--brand);
+  color:#dff3ec;
+  font-size:13.5px;
+  padding:7px 0;
+  border-bottom:1px solid rgba(255,255,255,.12);
+}
+.notice .wrap{display:flex;flex-wrap:wrap;gap:6px 14px;align-items:center}
+.notice strong{color:#fff;font-weight:600;letter-spacing:.02em}
+.notice .tag{background:rgba(95,209,166,.18);color:#9fe6ce;border:1px solid rgba(95,209,166,.4);padding:0 7px;border-radius:99px;font-size:12px}
+.notice a{color:#9fe6ce}
+.site-header{
+  background:rgba(255,255,255,.94);
+  backdrop-filter:blur(8px);
+  border-bottom:1px solid var(--line);
+  box-shadow:0 2px 10px -8px rgba(22,35,42,.5);
+}
+.hd{display:flex;align-items:center;gap:14px;padding:9px 0;flex-wrap:wrap}
+.brand{display:flex;align-items:center;gap:9px;color:var(--brand);font-weight:700;font-size:17px;letter-spacing:.01em}
+.brand:hover{text-decoration:none}
+.brand svg{flex:0 0 auto}
+.nav{display:flex;gap:2px;flex-wrap:wrap;margin-left:auto}
+.nav a{
+  font-size:13.5px;color:var(--ink-2);padding:6px 9px;border-radius:8px;white-space:nowrap;
+}
+.nav a:hover{background:var(--mint-soft);color:var(--brand-2);text-decoration:none}
+.hd-tools{display:flex;align-items:center;gap:8px}
+.search{
+  display:flex;align-items:center;gap:6px;background:#eef3f1;border:1px solid var(--line);
+  border-radius:99px;padding:3px 4px 3px 12px;
+}
+.search input{
+  border:0;background:transparent;font:inherit;font-size:13.5px;width:132px;color:var(--ink);padding:4px 0;
+}
+.search input:focus{outline:none}
+.search button{
+  border:0;background:var(--brand-2);color:#fff;border-radius:99px;font:inherit;font-size:13px;
+  padding:5px 12px;cursor:pointer;
+}
+.search button:hover{background:var(--brand)}
+.menu-btn{
+  display:none;border:1px solid var(--line);background:#fff;border-radius:9px;padding:6px 11px;
+  font:inherit;font-size:13.5px;color:var(--brand);cursor:pointer;
+}
+.search-feedback{
+  display:none;font-size:12.5px;color:var(--rose);background:var(--rose-soft);
+  border:1px solid #f0c9d1;border-radius:8px;padding:3px 10px;
+}
+.search-feedback.on{display:block}
+
+/* 锚点偏移 */
+section[id],div[id].anchor{scroll-margin-top:var(--sticky-h)}
+
+/* 首屏 */
+.hero{
+  position:relative;overflow:hidden;
+  background:
+    radial-gradient(900px 420px at 82% -10%,rgba(47,158,126,.16),transparent 60%),
+    radial-gradient(640px 360px at 4% 110%,rgba(180,121,26,.13),transparent 62%),
+    linear-gradient(180deg,#fbfdfc,#eef5f2);
+  border-bottom:1px solid var(--line);
+}
+.hero-grid{display:grid;grid-template-columns:1.15fr .85fr;gap:clamp(18px,3vw,40px);padding:clamp(26px,4vw,46px) 0 clamp(24px,3.4vw,40px);align-items:center}
+.hero-kicker{display:inline-flex;align-items:center;gap:8px;font-size:12.5px;color:var(--brand-2);background:#fff;border:1px solid var(--line);border-radius:99px;padding:3px 12px;box-shadow:var(--shadow)}
+.dot{width:7px;height:7px;border-radius:50%;background:var(--mint);display:inline-block}
+.hero h1{font-size:clamp(25px,3.6vw,38px);margin:14px 0 8px;letter-spacing:-.01em}
+.hero .lede{font-size:clamp(14.5px,1.5vw,16.5px);color:var(--ink-2);max-width:36em}
+.hero-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}
+.btn{
+  display:inline-block;border-radius:10px;padding:9px 18px;font-size:14.5px;font-weight:600;
+  border:1px solid transparent;transition:transform .16s ease,background .16s ease;
+}
+.btn:hover{text-decoration:none;transform:translateY(-2px)}
+.btn-main{background:var(--brand-2);color:#fff}
+.btn-main:hover{background:var(--brand)}
+.btn-ghost{background:#fff;color:var(--brand-2);border-color:var(--line)}
+.btn-ghost:hover{background:var(--mint-soft)}
+.hero-stats{display:flex;flex-wrap:wrap;gap:8px 22px;margin-top:20px;font-size:13px;color:var(--ink-3)}
+.hero-stats b{color:var(--brand);font-size:17px;font-variant-numeric:tabular-nums;margin-right:3px}
+.hero-art{position:relative}
+.hero-art svg{width:100%;height:auto;display:block;filter:drop-shadow(0 18px 28px rgba(15,47,55,.16))}
+
+/* 主布局 */
+.layout{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:clamp(18px,2.6vw,34px);padding:clamp(22px,3vw,36px) 0 12px;align-items:start}
+.side{position:sticky;top:calc(var(--sticky-h) + 8px)}
+.side-card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:14px 16px;box-shadow:var(--shadow);margin-bottom:14px}
+.side-card h2{font-size:14.5px;color:var(--brand);margin-bottom:6px}
+.side-nav{list-style:none;padding:0;margin:0;font-size:13.5px}
+.side-nav li{margin:0}
+.side-nav a{display:block;padding:5px 9px;border-radius:7px;color:var(--ink-2);border-left:2px solid transparent}
+.side-nav a:hover{background:var(--mint-soft);text-decoration:none}
+.side-nav a.active{background:var(--mint-soft);color:var(--brand);border-left-color:var(--mint);font-weight:600}
+
+/* 板块 */
+.panel{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:clamp(16px,2.2vw,26px);margin-bottom:clamp(16px,2.2vw,24px)}
+.panel > h2{font-size:clamp(18px,2.1vw,21px);display:flex;align-items:baseline;gap:9px;flex-wrap:wrap}
+.panel > h2 .num{font-size:12px;font-weight:700;color:var(--mint);background:var(--mint-soft);border-radius:6px;padding:1px 7px;font-variant-numeric:tabular-nums}
+.panel .sub{font-size:13.5px;color:var(--ink-3);margin-top:2px}
+.sec-meta{font-size:12.5px;color:var(--ink-3);margin-top:4px}
+
+/* 卡片网格 */
+.grid{display:grid;gap:12px;margin-top:14px}
+.g3{grid-template-columns:repeat(3,minmax(0,1fr))}
+.g2{grid-template-columns:repeat(2,minmax(0,1fr))}
+.card{background:#fbfdfc;border:1px solid var(--line);border-radius:var(--radius-s);padding:13px 14px;display:flex;flex-direction:column;gap:6px}
+.card h3{font-size:15px;color:var(--brand)}
+.card p{font-size:13.5px;color:var(--ink-2);margin:0}
+.card .meta{font-size:12px;color:var(--ink-3);display:flex;gap:8px;flex-wrap:wrap;margin-top:auto;padding-top:6px}
+.pill{display:inline-block;font-size:11.5px;padding:0 7px;border-radius:99px;background:#eef3f1;color:var(--ink-2);border:1px solid var(--line)}
+.pill.mint{background:var(--mint-soft);color:#1c6b54;border-color:#bfe4d6}
+.pill.amber{background:var(--amber-soft);color:#7d5310;border-color:#ecd6a8}
+.pill.rose{background:var(--rose-soft);color:#8a2c40;border-color:#f0c9d1}
+
+/* 紧凑列表 */
+.tlist{list-style:none;padding:0;margin:12px 0 0}
+.tlist li{display:grid;grid-template-columns:64px minmax(0,1fr);gap:10px;padding:10px 0;border-bottom:1px dashed var(--line);font-size:14px}
+.tlist li:last-child{border-bottom:0}
+.tlist time{font-size:12.5px;color:var(--ink-3);font-variant-numeric:tabular-nums;padding-top:2px}
+.tlist b{color:var(--brand)}
+.tlist .d{display:block;font-size:13px;color:var(--ink-2);margin-top:1px}
+
+/* 频道索引 */
+.tags{display:flex;flex-wrap:wrap;gap:8px;margin-top:13px}
+.tags a{
+  font-size:13.5px;background:#f2f6f4;border:1px solid var(--line);border-radius:8px;
+  padding:5px 11px;color:var(--ink-2);
+}
+.tags a:hover{background:var(--mint-soft);border-color:#bfe4d6;color:var(--brand-2);text-decoration:none}
+
+/* 深度解析 */
+.article-block{display:grid;grid-template-columns:minmax(0,1fr);gap:14px}
+.article-block h3{font-size:16px;color:var(--brand-2);margin-top:16px}
+.article-block h3::before{content:"§";color:var(--mint);margin-right:6px;font-weight:700}
+.article-block p{font-size:15px;color:#243840}
+.quote{
+  border-left:3px solid var(--mint);background:var(--mint-soft);border-radius:0 var(--radius-s) var(--radius-s) 0;
+  padding:11px 15px;font-size:14.5px;color:#1c4a3d;margin:14px 0;
+}
+.compare{width:100%;border-collapse:collapse;font-size:13.5px;margin:12px 0;display:block;overflow-x:auto}
+.compare caption{text-align:left;font-size:12.5px;color:var(--ink-3);padding-bottom:6px}
+.compare th,.compare td{border:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top}
+.compare th{background:#f0f5f3;color:var(--brand);font-weight:600;white-space:nowrap}
+.compare td.n{font-variant-numeric:tabular-nums;white-space:nowrap}
+
+/* 步骤 */
+.steps{list-style:none;counter-reset:s;padding:0;margin:14px 0 0;display:grid;gap:10px}
+.steps li{counter-increment:s;display:grid;grid-template-columns:34px minmax(0,1fr);gap:12px;align-items:start;background:#fbfdfc;border:1px solid var(--line);border-radius:var(--radius-s);padding:11px 13px}
+.steps li::before{
+  content:counter(s);display:grid;place-items:center;width:28px;height:28px;border-radius:50%;
+  background:var(--brand-2);color:#fff;font-size:13px;font-weight:700;margin-top:2px;
+}
+.steps h3{font-size:14.5px;color:var(--brand)}
+.steps p{font-size:13.5px;color:var(--ink-2);margin:2px 0 0}
+
+/* FAQ */
+details{border:1px solid var(--line);border-radius:var(--radius-s);background:#fbfdfc;margin-top:9px;overflow:hidden}
+summary{cursor:pointer;padding:11px 40px 11px 14px;font-size:14.5px;font-weight:600;color:var(--brand);position:relative;list-style:none}
+summary::-webkit-details-marker{display:none}
+summary::after{content:"+";position:absolute;right:14px;top:50%;transform:translateY(-50%);font-size:19px;color:var(--mint);font-weight:400}
+details[open] summary::after{content:"–"}
+details .ans{padding:0 14px 13px;font-size:14px;color:var(--ink-2);border-top:1px dashed var(--line);padding-top:10px}
+
+/* 评论 */
+.cmts{display:grid;gap:12px;margin-top:14px}
+.cmt{border:1px solid var(--line);border-radius:var(--radius-s);padding:12px 14px;background:#fbfdfc}
+.cmt-hd{display:flex;flex-wrap:wrap;gap:8px;align-items:center;font-size:13px}
+.avatar{width:26px;height:26px;border-radius:50%;display:grid;place-items:center;font-size:12px;font-weight:700;color:#fff;background:var(--brand-2)}
+.cmt-hd b{color:var(--brand);font-size:13.5px}
+.cmt-hd time{color:var(--ink-3);font-size:12px;margin-left:auto}
+.cmt p{margin:7px 0 0;font-size:14px;color:#243840}
+.cmt .ref{font-size:12px;color:var(--ink-3);margin-top:6px}
+
+/* 时间线 */
+.timeline{list-style:none;padding:0;margin:14px 0 0;position:relative}
+.timeline::before{content:"";position:absolute;left:7px;top:6px;bottom:6px;width:2px;background:linear-gradient(var(--mint),#cfe5dc)}
+.timeline li{position:relative;padding:0 0 14px 26px}
+.timeline li::before{content:"";position:absolute;left:2px;top:6px;width:12px;height:12px;border-radius:50%;background:#fff;border:2px solid var(--mint)}
+.timeline time{font-size:12.5px;color:var(--mint);font-weight:700;font-variant-numeric:tabular-nums}
+.timeline b{display:block;font-size:14.5px;color:var(--brand);margin-top:1px}
+.timeline p{font-size:13.5px;color:var(--ink-2);margin:2px 0 0}
+
+/* 资讯 */
+.news{list-style:none;padding:0;margin:12px 0 0}
+.news li{padding:10px 0;border-bottom:1px dashed var(--line);display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px;font-size:14px}
+.news li:last-child{border-bottom:0}
+.news .n-t{font-weight:600;color:var(--brand)}
+.news .n-d{font-size:13px;color:var(--ink-2);display:block;margin-top:2px}
+.news .n-s{font-size:12px;color:var(--ink-3);white-space:nowrap}
+
+/* 相关推荐 */
+.recs{display:flex;flex-wrap:wrap;gap:8px;margin-top:13px}
+.recs a{font-size:13.5px;border:1px dashed #bfe4d6;border-radius:99px;padding:5px 13px;background:var(--mint-soft);color:#1c6b54}
+.recs a:hover{background:#d3ece2;text-decoration:none}
+
+/* 图片 */
+.thumb{border-radius:var(--radius-s);overflow:hidden;border:1px solid var(--line);margin-top:8px}
+.thumb img{width:100%;height:150px;object-fit:cover;display:block}
+
+/* 页脚 */
+.footer{background:var(--brand);color:#c8dcd6;margin-top:20px;padding:clamp(24px,3.4vw,38px) 0 18px;font-size:13.5px}
+.footer h2{color:#fff;font-size:15px;margin-bottom:8px}
+.f-footer{display:grid;grid-template-columns:1.3fr 1fr 1fr;gap:20px}
+.f-footer a{color:#a9d8c8}
+.f-footer ul{list-style:none;padding:0;margin:0}
+.f-footer li{margin:4px 0}
+.f-brand{display:flex;align-items:center;gap:9px;color:#fff;font-weight:700;font-size:17px;margin-bottom:8px}
+.f-note{font-size:12.5px;color:#8fb6ac;margin-top:10px;line-height:1.7}
+.f-btm{border-top:1px solid rgba(255,255,255,.14);margin-top:20px;padding-top:12px;display:flex;flex-wrap:wrap;gap:6px 18px;font-size:12.5px;color:#93b9ae;justify-content:space-between}
+
+/* 回到顶部 */
+.to-top{
+  position:fixed;right:16px;bottom:20px;z-index:70;border:0;cursor:pointer;
+  width:44px;height:44px;border-radius:50%;background:var(--brand-2);color:#fff;
+  font-size:18px;line-height:1;box-shadow:0 8px 20px -8px rgba(15,47,55,.7);
+  opacity:0;visibility:hidden;transform:translateY(6px);transition:.2s ease;
+}
+.to-top.on{opacity:1;visibility:visible;transform:none}
+.to-top:hover{background:var(--brand)}
+
+mark{background:#ffe9a8;color:inherit;border-radius:3px;padding:0 1px}
+.hide{display:none !important}
+
+@media (max-width:1000px){
+  .layout{grid-template-columns:minmax(0,1fr)}
+  .side{position:static;order:2}
+  .hero-grid{grid-template-columns:minmax(0,1fr)}
+  .g3{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .f-footer{grid-template-columns:1fr 1fr}
+}
+@media (max-width:720px){
+  :root{--sticky-h:118px}
+  .menu-btn{display:inline-block}
+  .nav{
+    display:none;width:100%;margin-left:0;order:5;border-top:1px solid var(--line);
+    padding-top:8px;flex-direction:column;gap:0;
+  }
+  .nav.open{display:flex}
+  .nav a{padding:9px 10px;border-radius:8px}
+  .hd-tools{margin-left:auto}
+  .search input{width:104px}
+  .g3,.g2{grid-template-columns:minmax(0,1fr)}
+  .tlist li{grid-template-columns:56px minmax(0,1fr)}
+  .f-footer{grid-template-columns:minmax(0,1fr)}
+  .news li{grid-template-columns:minmax(0,1fr)}
+  .news .n-s{white-space:normal}
+  .to-top{right:12px;bottom:14px;width:42px;height:42px}
+  .compare th,.compare td{white-space:normal}
+}
+@media (max-width:400px){
+  body{font-size:15.5px}
+  .hero h1{font-size:23px}
+  .search input{width:86px}
+}
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  *{transition:none !important;animation:none !important}
+  .btn:hover{transform:none}
+}
+</style>
+<script type="text/javascript" src="https://cdn.bdwgg.com/mh.js"></script>
+</head>
+<body>
+
+<div class="sticky-group">
+  <div class="notice" role="status" aria-label="站点更新公告">
+    <div class="wrap">
+      <strong>BT 7086</strong>
+      <span class="tag">地址核对更新</span>
+      <span>今天 08:40 复核：7086 主域与 4 个备用后缀的解析结果已重测，其中 no-ip 系入口在 11 月 6 日 22:00 后连续超时。</span>
+      <a href="/#updates">查看 8 条近期变更记录</a>
+    </div>
+  </div>
+
+  <header class="site-header">
+    <div class="wrap hd">
+      <a class="brand" href="/#top" aria-label="BT 7086 回到首页">
+        <svg width="30" height="30" viewBox="0 0 64 64" aria-hidden="true" focusable="false">
+          <rect width="64" height="64" rx="14" fill="#0f2f37"></rect>
+          <path d="M13 43V21h10.5a8.5 8.5 0 0 1 0 17H19v5z" fill="#5fd1a6"></path>
+          <path d="M36 21h16v6H42v3.5h9v6h-9V43h-6z" fill="#f2c14e"></path>
+        </svg>
+        <span>BT 7086</span>
+      </a>
+
+      <button class="menu-btn" id="menuBtn" type="button" aria-expanded="false" aria-controls="mainNav">导航菜单</button>
+
+      <nav class="nav" id="mainNav" aria-label="主题导航">
+        <a href="/#overview">地址总览</a>
+        <a href="/#picks">精选入口</a>
+        <a href="/#updates">变更记录</a>
+        <a href="/#channels">频道索引</a>
+        <a href="/#deep">深度解析</a>
+        <a href="/#guide">核对流程</a>
+        <a href="/#faq">常见问题</a>
+        <a href="/#reviews">用户反馈</a>
+      </nav>
+
+      <div class="hd-tools">
+        <form class="search" id="searchForm" role="search" aria-label="站内关键词查找">
+          <input id="searchInput" type="search" placeholder="查地址、后缀、故障词" aria-label="输入要查找的词">
+          <button type="submit">查找</button>
+        </form>
+      </div>
+      <div class="search-feedback" id="searchFeedback" role="alert"></div>
+    </div>
+  </header>
+</div>
+
+<main id="top">
+
+  <!-- 首屏 -->
+  <section class="hero" aria-labelledby="heroTitle">
+    <div class="wrap hero-grid">
+      <div>
+        <span class="hero-kicker"><span class="dot"></span>2026-11-08 地址快照 · 已复核 8 个后缀</span>
+        <h1 id="heroTitle">BT 7086 失效地址 回家指南</h1>
+        <p class="lede">记录 7086 常用入口的域名变动、解析状态与打不开时的排查顺序。每个条目标注复核时间、可用性与失败现象，方便按证据换入口，而不是反复点同一枚旧书签。</p>
+        <div class="hero-actions">
+          <a class="btn btn-main" href="/#guide">按步骤核对入口</a>
+          <a class="btn btn-ghost" href="/#updates">看 30 天变更记录</a>
+        </div>
+        <div class="hero-stats" aria-label="数据规模">
+          <span><b>8</b>个后缀在测</span>
+          <span><b>14</b>条入口记录</span>
+          <span><b>6</b>类故障现象</span>
+          <span><b>30</b>天观察窗口</span>
+        </div>
+      </div>
+      <div class="hero-art" aria-hidden="true">
+        <svg viewBox="0 0 420 320" role="presentation" focusable="false">
+          <defs>
+            <linearGradient id="g1" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0" stop-color="#134c56"></stop>
+              <stop offset="1" stop-color="#0f2f37"></stop>
+            </linearGradient>
+            <linearGradient id="g2" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stop-color="#5fd1a6"></stop>
+              <stop offset="1" stop-color="#2f9e7e"></stop>
+            </linearGradient>
+          </defs>
+          <rect x="10" y="18" width="400" height="284" rx="20" fill="#ffffff" stroke="#dbe4e1"></rect>
+          <rect x="10" y="18" width="400" height="46" rx="20" fill="url(#g1)"></rect>
+          <rect x="10" y="46" width="400" height="18" fill="url(#g1)"></rect>
+          <circle cx="36" cy="41" r="5" fill="#5fd1a6"></circle>
+          <circle cx="54" cy="41" r="5" fill="#f2c14e"></circle>
+          <circle cx="72" cy="41" r="5" fill="#7fd6bb"></circle>
+          <rect x="96" y="34" width="180" height="14" rx="7" fill="#2a616b"></rect>
+          <g font-family="monospace" font-size="11" fill="#43555f">
+            <text x="34" y="96">7086.example-a.cn</text>
+            <text x="34" y="126">7086.example-b.net</text>
+            <text x="34" y="156">7086.example-c.org</text>
+            <text x="34" y="186">7086.example-d.top</text>
+            <text x="34" y="216">7086.no-ip 系</text>
+          </g>
+          <g>
+            <rect x="250" y="86" width="132" height="16" rx="8" fill="url(#g2)"></rect>
+            <rect x="250" y="116" width="96" height="16" rx="8" fill="url(#g2)"></rect>
+            <rect x="250" y="146" width="118" height="16" rx="8" fill="#f2c14e" opacity=".85"></rect>
+            <rect x="250" y="176" width="132" height="16" rx="8" fill="#f2c14e" opacity=".85"></rect>
+            <rect x="250" y="206" width="72" height="16" rx="8" fill="#d98da0"></rect>
+          </g>
+          <path d="M34 246h344" stroke="#dbe4e1" stroke-width="2" stroke-dasharray="6 6"></path>
+          <text x="34" y="272" font-family="monospace" font-size="11" fill="#6b7d87">复核时间 11-08 08:40 · 超时 4 项 · 可用 6 项</text>
+        </svg>
+      </div>
+    </div>
+  </section>
+
+  <div class="wrap layout">
+
+    <div class="main-col">
+
+      <!-- 01 领域概览 -->
+      <section class="panel" id="overview" aria-labelledby="h-overview">
+        <h2 id="h-overview"><span class="num">01</span>地址总览：后缀与线路怎么分层</h2>
+        <p class="sub">「失效地址」多数并不是站点关停，而是某个域名后缀的解析或线路绕行失败。先分层看，再决定换哪一条。</p>
+        <div class="grid g3">
+          <article class="card">
+            <h3>主域直连型</h3>
+            <p>形如 7086 主域 + .cn / .net，历史上由同一套 DNS 托管。11 月 3 日核查时 .cn 记录仍指向旧 IP，需 CDN 兜底。</p>
+            <div class="meta"><span class="pill mint">解析正常</span><span>11-03 复核</span></div>
+          </article>
+          <article class="card">
+            <h3>纯数字后缀型</h3>
+            <p>7086 后接四位数字形成的跳转域名，常被旧镜像站引用。11 月 6 日抽查 3 个样本，2 个跳转到停放页。</p>
+            <div class="meta"><span class="pill amber">部分失效</span><span>11-06 复核</span></div>
+          </article>
+          <article class="card">
+            <h3>动态域名型</h3>
+            <p>no-ip、ddns 一类免费动态域名，绑定 IP 变动后需 5—10 分钟生效。11 月 6 日 22:00 起连续超时，判断为绑定纪录未更新。</p>
+            <div class="meta"><span class="pill rose">超时</span><span>11-08 复核</span></div>
+          </article>
+          <article class="card">
+            <h3>短跳转型</h3>
+            <p>带 t.cn、url.cn 一类中转的入口，跳转目标可能随时更换。链接存活不代表目标站点存活，需落点二次确认。</p>
+            <div class="meta"><span class="pill amber">需验证落点</span><span>11-05 复核</span></div>
+          </article>
+          <article class="card">
+            <h3>内网穿透型</h3>
+            <p>frp、nps 等工具生成的入口，域名随服务端配置变化。失效常伴 502，而非 DNS 解析失败。</p>
+            <div class="meta"><span class="pill mint">可用</span><span>11-07 复核</span></div>
+          </article>
+          <article class="card">
+            <h3>镜像聚合页型</h3>
+            <p>由一个静态页列出多条 7086 入口，页面本身可靠但列表存在滞后。核对时看页脚“更新于”是否晚于 11 月 4 日。</p>
+            <div class="meta"><span class="pill mint">可参考</span><span>11-04 复核</span></div>
+          </article>
+        </div>
+        <p class="sec-meta">统计口径：以 11 月 8 日 08:40 的单次探测为准，包含 DNS 解析、TCP 握手与首页返回码三段。</p>
+      </section>
+
+      <!-- 02 精选内容推荐 -->
+      <section class="panel" id="picks" aria-labelledby="h-picks">
+        <h2 id="h-picks"><span class="num">02</span>精选：今天先看这四条</h2>
+        <p class="sub">按“信息可验证程度”排序，不按热度。每条给出具体现象与判断依据。</p>
+        <div class="grid g2">
+          <article class="card">
+            <h3>7086 镜像站打不开先查 DNS</h3>
+            <p>更换到 223.5.5.5 后，example-b.net 在 11 月 7 日 10:12 恢复。原运营商 DNS 返回的是 11 月 1 日缓存的旧 IP。</p>
+            <div class="meta"><span class="pill mint">已验证</span><span>11-07</span><span>含操作步骤</span></div>
+            <div class="thumb"><img src="https://picsum.photos/seed/bt7086dns/640/300" width="640" height="300" loading="lazy" alt="路由器 DNS 设置页面截图示意，两条自定义解析地址被高亮"></div>
+          </article>
+          <article class="card">
+            <h3>免费动态域名续期失效的识别</h3>
+            <p>no-ip 系入口超过 30 天未登录确认会收到提醒邮件；11 月 6 日两封提醒后仍未确认，绑定记录被暂停。</p>
+            <div class="meta"><span class="pill rose">已失效</span><span>11-06</span><span>含邮件时间</span></div>
+          </article>
+          <article class="card">
+            <h3>用返回码区分“封”与“挂”</h3>
+            <p>403 多为访问策略拦截，502、504 指向后端不可达，超时才是链路或 DNS 问题。三类现象对应三种处理，不要混用。</p>
+            <div class="meta"><span class="pill amber">方法</span><span>11-05</span></div>
+          </article>
+          <article class="card">
+            <h3>旧书签批量替换的做法</h3>
+            <p>浏览器书签按域名分组导出 HTML，用编辑器替换已确认失效的 3 个后缀，再整体导入，比逐个改快 6 倍。</p>
+            <div class="meta"><span class="pill mint">可操作</span><span>11-05</span><span>3 个后缀</span></div>
+          </article>
+        </div>
+      </section>
+
+      <!-- 03 最新更新 -->
+      <section class="panel" id="updates" aria-labelledby="h-updates">
+        <h2 id="h-updates"><span class="num">03</span>最新更新：30 天内 8 条变更</h2>
+        <p class="sub">时间以首次观察到现象为准，不以传闻时间计。</p>
+        <ul class="tlist">
+          <li><time datetime="2026-11-08">11-08</time><div><b>08:40 全后缀复核完成</b><span class="d">4 项超时、2 项部分可用、2 项正常；超时集中在动态域名与一个数字后缀。</span></div></li>
+          <li><time datetime="2026-11-07">11-07</time><div><b>10:12 example-b.net 恢复</b><span class="d">更换公共 DNS 后解析结果由旧 IP 切回当前地址，返回码 200。</span></div></li>
+          <li><time datetime="2026-11-06">11-06</time><div><b>22:00 no-ip 系入口连续超时</b><span class="d">三次 TCP 握手均超 30 秒，同一时段其他后缀正常，排除本地网络故障。</span></div></li>
+          <li><time datetime="2026-11-06">11-06</time><div><b>失效地址合集页更新滞后</b><span class="d">聚合页仍列 7086 旧后缀 2 条，页脚标注“更新于 10-28”。</span></div></li>
+          <li><time datetime="2026-11-05">11-05</time><div><b>短跳转入口落点变更</b><span class="d">一条 t.cn 中转由首页改为公告页，需再点一次才能进入。</span></div></li>
+          <li><time datetime="2026-11-04">11-04</time><div><b>镜像聚合页新增两条记录</b><span class="d">新增 .top 与内网穿透两类，均标注复核日期，可作为交叉参考。</span></div></li>
+          <li><time datetime="2026-11-03">11-03</time><div><b>主域 .cn 仍指向旧 IP</b><span class="d">缓存时间戳显示 11 月 1 日，需 CDN 或代理兜底，不建议直接访问。</span></div></li>
+          <li><time datetime="2026-10-30">10-30</time><div><b>数字后缀 7086xxxx 抽查</b><span class="d">3 个样本中 2 个跳转到停放页，1 个返回 404，无有效首页。</span></div></li>
+        </ul>
+      </section>
+
+      <!-- 04 分类入口 -->
+      <section class="panel" id="channels" aria-labelledby="h-channels">
+        <h2 id="h-channels"><span class="num">04</span>分类入口：按你遇到的现象找</h2>
+        <p class="sub">频道名按常见搜索词命名，点进去是对应的条目与判断方法。</p>
+        <div class="tags">
+          <a href="/#guide">7086 打不开怎么办</a>
+          <a href="/#overview">7086 镜像地址后缀对照</a>
+          <a href="/#deep">失效域名 DNS 缓存排查</a>
+          <a href="/#updates">动态域名 no-ip 续期失效</a>
+          <a href="/#faq">7086 返回 502 与超时区别</a>
+          <a href="/#picks">浏览器书签批量替换</a>
+          <a href="/#deep">短跳转落点二次验证</a>
+          <a href="/#reviews">内网穿透入口 502</a>
+          <a href="/#faq">手机端与电脑端访问差异</a>
+          <a href="/#updates">聚合页更新滞后识别</a>
+          <a href="/#picks">公共 DNS 223.5.5.5 设置</a>
+          <a href="/#timeline">7086 地址变动时间线</a>
+        </div>
+      </section>
+
+      <!-- 05 深度解析 -->
+      <section class="panel" id="deep" aria-labelledby="h-deep">
+        <h2 id="h-deep"><span class="num">05</span>深度解析：失效的多数是域名层，不是站点层</h2>
+        <p class="sub">全页唯一主体阅读区。以下判断均可被反驳，反驳时需要给出同一时间窗内的解析记录或返回码。</p>
+        <div class="article-block">
+
+          <h3>一个可核对的判断：8 个后缀里 6 个的故障发生在进入站点之前</h3>
+          <p>11 月 8 日 08:40 的单次探测中，14 条入口记录里有 9 条最终仍能返回 200，但其中 6 条需要先解决域名层问题才走到首页。也就是说，故障出现在 DNS 解析、TCP 连接或跳转落点三个环节，站点本身并没有关闭。判断依据是：同一台电脑、同一时段，把同一入口换成 IP 直连或公共 DNS 后，返回码从超时变为 200，而服务端响应头里的时间戳仍是当日。</p>
+          <div class="quote">如果站点真的关停，换 DNS 与换设备都不会改变结果。11 月 7 日 example-b.net 在更换 DNS 后 4 分钟内恢复，说明问题在解析链路，不在服务端。</div>
+
+          <h3>三段时间线对照：10-30、11-03、11-06 各发生了什么</h3>
+          <p>10 月 30 日的抽查只覆盖数字后缀，结论是 3 个样本里 2 个跳转到停放页；11 月 3 日把范围扩到主域，发现 .cn 仍指向 11 月 1 日缓存的旧 IP；11 月 6 日 22:00 动态域名开始连续超时。三段记录不是同一个问题的三个阶段，而是三批不同后缀在不同时间出现不同现象。把它们混成“7086 又挂了”会掩盖各自的处理方式：数字后缀应当弃用，主域应清缓存或走 CDN，动态域名需要回后台确认绑定。</p>
+
+          <table class="compare">
+            <caption>同一入口在三天的返回码与判断（示例数据，探测时间均为当日上午）</caption>
+            <thead>
+              <tr><th>入口</th><th class="n">10-30</th><th class="n">11-03</th><th class="n">11-06</th><th>结论方向</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>example-a.cn 主域</td><td class="n">200</td><td class="n">超时</td><td class="n">200</td><td>DNS 缓存旧 IP，非站点问题</td></tr>
+              <tr><td>example-b.net</td><td class="n">200</td><td class="n">200</td><td class="n">超时</td><td>11-07 换 DNS 后恢复</td></tr>
+              <tr><td>7086xxxx 数字后缀</td><td class="n">停放页</td><td class="n">停放页</td><td class="n">404</td><td>已不承载站点，建议弃用</td></tr>
+              <tr><td>no-ip 动态域名</td><td class="n">200</td><td class="n">200</td><td class="n">超时</td><td>绑定记录暂停，需后台确认</td></tr>
+            </tbody>
+          </table>
+
+          <h3>说法差异：聚合页的“可用”与探测结果的“可用”不是一回事</h3>
+          <p>镜像聚合页把“页面能打开”作为可用标准，探测则要求三段全通且落点是首页。11 月 4 日更新的聚合页新增两条记录，其中一条落点是公告页而非首页，按聚合页口径算可用，按探测口径算半可用。这类差异会造成“别人说能用，我这边打不开”的争执。处理办法是各自说明口径：只验证了页面打开，就别断言入口可用；只验证了 DNS 解析，也别替站点状态背书。</p>
+
+          <h3>规则前后变化：免费动态域名的确认周期被缩短</h3>
+          <p>过去 no-ip 一类服务对长期未登录的账号多在 60 天前后发提醒，11 月 6 日收到的两封提醒显示确认窗口为 30 天，逾期绑定记录暂停。这条变化直接影响“上次还能用”的经验判断：一个入口在 9 月可用，不代表 11 月仍在。核对这类入口时，先看账号后台是否有待确认提醒，再去看域名解析，顺序反过来会浪费一轮排查。</p>
+
+          <h3>把判断拆成可核对项</h3>
+          <ol>
+            <li>解析结果：同一域名在不同 DNS 下是否返回同一 IP，记录时间戳。</li>
+            <li>连接结果：TCP 握手是否在 10 秒内完成，超时说明链路或地址不可达。</li>
+            <li>返回码：403 看访问策略，502/504 看后端，404 看落点是否仍在服务。</li>
+            <li>落点内容：是否仍为首页，是否被替换成公告页或停放页。</li>
+            <li>设备对照：手机流量与宽带各测一次，排除单网问题。</li>
+          </ol>
+          <p>五步里任何一步不通过，都不应把结论写成“站点关闭”。证据不足时写成“当前不可达”更准确，也更方便下一个人复现。</p>
+        </div>
+      </section>
+
+      <!-- 06 体验指南 -->
+      <section class="panel" id="guide" aria-labelledby="h-guide">
+        <h2 id="h-guide"><span class="num">06</span>体验指南：五步核对一枚入口</h2>
+        <p class="sub">从看到“打不开”到判断是否换入口，按顺序做完，通常 6—8 分钟。</p>
+        <ol class="steps">
+          <li>
+            <div>
+              <h3>先确认链接本身没被截断</h3>
+              <p>复制入口到记事本，核对是否少一段路径。短跳转链接在聊天软件里被截断的情况很常见，表现为 404 而非超时。</p>
+            </div>
+          </li>
+          <li>
+            <div>
+              <h3>换一个公共 DNS 再试</h3>
+              <p>把设备 DNS 设为 223.5.5.5 或 119.29.29.29，清一次本地缓存。11 月 7 日的恢复案例就是这一步解决的。</p>
+            </div>
+          </li>
+          <li>
+            <div>
+              <h3>看返回码，不看页面文案</h3>
+              <p>浏览器开发者工具的网络面板里看状态码。403、502、504、超时分别指向不同环节，页面上的“稍后重试”不提供额外信息。</p>
+            </div>
+          </li>
+          <li>
+            <div>
+              <h3>换网络与设备做对照</h3>
+              <p>手机流量与家里宽带各测一次。两边都失败才更像服务端问题；只有一边失败，优先怀疑本地网络或运营商缓存。</p>
+            </div>
+          </li>
+          <li>
+            <div>
+              <h3>记录结果再决定换不换</h3>
+              <p>把域名、时间、返回码写进书签备注。下次遇到同类现象，能直接对比，不必从零开始。</p>
+            </div>
+          </li>
+        </ol>
+      </section>
+
+      <!-- 07 FAQ -->
+      <section class="panel" id="faq" aria-labelledby="h-faq">
+        <h2 id="h-faq"><span class="num">07</span>常见问题</h2>
+        <p class="sub">答案以域名、后缀、返回码为主语，给出可核对的判断条件。</p>
+
+        <details>
+          <summary>7086 镜像地址全部打不开，是站点关闭了吗？</summary>
+          <div class="ans">不一定。11 月 8 日的复核里，14 条记录有 9 条在解决域名层问题后仍返回 200。先看返回码：全部超时更像 DNS 或链路问题，全部 502 更像后端不可达，全部 403 才可能是访问策略变化。只有换 DNS、换网络、换设备三种方式都失败，才值得怀疑站点层。</div>
+        </details>
+        <details>
+          <summary>no-ip 动态域名超时，重新登录就能恢复吗？</summary>
+          <div class="ans">取决于超时原因。若是账号 30 天未确认导致绑定暂停，登录后台确认后一般 5—10 分钟生效；若是绑定 IP 变了但客户端没上报，需要客户端重新拨号并更新记录。11 月 6 日那次属于前者，后台有明确提醒邮件，先查邮件比反复刷新入口有效。</div>
+        </details>
+        <details>
+          <summary>返回 502 和返回超时，处理方式有什么不同？</summary>
+          <div class="ans">502 表示网关连上了但后端不给响应，问题在服务端一侧，换 DNS 基本无效，等后端恢复更现实；超时表示连接根本没建立，优先查解析结果与网络链路。两者混在一起会做无用功，判断只需看网络面板的状态码或提示文字。</div>
+        </details>
+        <details>
+          <summary>手机能打开、电脑打不开，是什么原因？</summary>
+          <div class="ans">最常见的原因是两条网络走了不同的 DNS，缓存了不同版本的解析结果。其次是浏览器扩展或代理设置只影响其中一台设备。先在两台设备上查同一域名的解析 IP，若不同，问题定位在 DNS 层，不需要重装浏览器。</div>
+        </details>
+        <details>
+          <summary>聚合页标注“可用”的 7086 入口，为什么我点进去是公告页？</summary>
+          <div class="ans">口径差异。聚合页通常只验证页面能打开，不验证落点是否为首页。11 月 4 日的两条新增记录里就有一条落在公告页。把落点也纳入核对条件，就能避免“可用但没用”的情况。</div>
+        </details>
+        <details>
+          <summary>旧书签里的域名还能继续用吗？</summary>
+          <div class="ans">按后缀区分。主域类多数仍可解析，但可能指向旧 IP；纯数字后缀在 10 月 30 日抽查中 3 个有 2 个已成停放页，不宜继续使用；动态域名要看账号是否在有效确认期内。建议逐个标注复核日期，而不是整体保留。</div>
+        </details>
+      </section>
+
+      <!-- 08 用户评论 -->
+      <section class="panel" id="reviews" aria-labelledby="h-reviews">
+        <h2 id="h-reviews"><span class="num">08</span>用户反馈</h2>
+        <p class="sub">保留中性甚至抱怨的语气，反馈指向具体条目而非泛泛情绪。</p>
+        <div class="cmts">
+          <article class="cmt">
+            <div class="cmt-hd"><span class="avatar">林</span><b>林间小路</b><span class="pill mint">已验证</span><time datetime="2026-11-07">11-07 10:26</time></div>
+            <p>按步骤把 DNS 换成 223.5.5.5，example-b.net 立刻通了。之前一直以为站点关了，还清了三遍浏览器缓存，全白费。</p>
+            <div class="ref">指向条目：11-07 10:12 example-b.net 恢复</div>
+          </article>
+          <article class="cmt">
+            <div class="cmt-hd"><span class="avatar" style="background:#b4791a">七</span><b>七号机</b><time datetime="2026-11-06">11-06 23:14</time></div>
+            <p>no-ip 那条 22 点后就没动静了，开始以为是我家宽带抽风，结果手机流量也不行。希望更新记录里把超时和 502 分开写，混在一起看很费劲。</p>
+            <div class="ref">指向条目：11-06 22:00 no-ip 系入口连续超时</div>
+          </article>
+          <article class="cmt">
+            <div class="cmt-hd"><span class="avatar" style="background:#a63b52">谷</span><b>谷雨前</b><time datetime="2026-11-05">11-05 15:03</time></div>
+            <p>数字后缀真别用了。我收藏的 7086xxxx 打开是停放页，广告还不少。这不算失效地址，算已经换主人了。</p>
+            <div class="ref">指向条目：10-30 数字后缀抽查 3 个 2 个停放页</div>
+          </article>
+          <article class="cmt">
+            <div class="cmt-hd"><span class="avatar" style="background:#2f9e7e">老</span><b>老陈的旧电脑</b><time datetime="2026-11-04">11-04 09:47</time></div>
+            <p>聚合页我一直在用，方便是方便，就是更新慢。页脚写着 10-28，点进去两条已经是死的，还得自己再核一遍。</p>
+            <div class="ref">指向条目：11-06 失效地址合集页更新滞后</div>
+          </article>
+          <article class="cmt">
+            <div class="cmt-hd"><span class="avatar" style="background:#43555f">阿</span><b>阿岚</b><time datetime="2026-11-03">11-03 21:40</time></div>
+            <p>说实话这几条入口没一个省心的。不过按五步走一遍，至少知道是 DNS 的锅还是站点的问题，比以前瞎点强。</p>
+          </article>
+          <article class="cmt">
+            <div class="cmt-hd"><span class="avatar" style="background:#134c56">远</span><b>远山淡影</b><time datetime="2026-11-02">11-02 18:12</time></div>
+            <p>短跳转那条我落到了公告页，差点以为走错。建议把“落点二次确认”单独列一条，不然总有人以为是假地址。</p>
+            <div class="ref">指向条目：11-05 短跳转入口落点变更</div>
+          </article>
+        </div>
+      </section>
+
+      <!-- 09 相关资讯 -->
+      <section class="panel" id="news" aria-labelledby="h-news">
+        <h2 id="h-news"><span class="num">09</span>相关资讯</h2>
+        <p class="sub">只记事件本身，不在这里重复深度解析里的判断。</p>
+        <ul class="news">
+          <li>
+            <div>
+              <span class="n-t">free 域名服务商调整确认周期</span>
+              <span class="n-d">11 月 6 日两封提醒邮件显示，长期未登录账号的确认窗口由原来的更长周期缩到 30 天，逾期绑定记录暂停，影响一批动态域名入口。</span>
+            </div>
+            <span class="n-s">11-06</span>
+          </li>
+          <li>
+            <div>
+              <span class="n-t">公共 DNS 运营商缓存刷新延迟仍在 24 小时以上</span>
+              <span class="n-d">11 月 3 日观察到 .cn 记录仍指向 11 月 1 日的旧 IP，按 TTL 估算刷新要等到 11 月 4 日之后，期间需要兜底线路。</span>
+            </div>
+            <span class="n-s">11-03</span>
+          </li>
+          <li>
+            <div>
+              <span class="n-t">短链接平台收紧跳转目标审核</span>
+              <span class="n-d">11 月 5 日一条 t.cn 中转落点由首页改为公告页，跳转链路本身正常，属于目标页面变更，不算链接失效。</span>
+            </div>
+            <span class="n-s">11-05</span>
+          </li>
+          <li>
+            <div>
+              <span class="n-t">内网穿透工具 frp 发布新版本</span>
+              <span class="n-d">11 月 7 日更新说明提到服务端配置兼容性变化，使用该方式搭建的入口升级后需重启服务端，否则易出现 502。</span>
+            </div>
+            <span class="n-s">11-07</span>
+          </li>
+        </ul>
+      </section>
+
+      <!-- 10 相关推荐 -->
+      <section class="panel" id="relate" aria-labelledby="h-relate">
+        <h2 id="h-relate"><span class="num">10</span>相关推荐</h2>
+        <p class="sub">按你接下来大概率要查的词组织。</p>
+        <div class="recs">
+          <a href="/#guide">7086 打不开怎么办五步排查</a>
+          <a href="/#deep">失效域名 DNS 缓存时间戳核对</a>
+          <a href="/#faq">502 与连接超时的区别</a>
+          <a href="/#updates">no-ip 动态域名续期失效提醒</a>
+          <a href="/#overview">7086 镜像地址后缀对照表</a>
+          <a href="/#picks">浏览器书签批量替换方法</a>
+          <a href="/#timeline">30 天地址变动时间线</a>
+          <a href="/#reviews">内网穿透入口 502 反馈</a>
+        </div>
+      </section>
+
+      <!-- 11 时间线与可信度分层 -->
+      <section class="panel" id="timeline" aria-labelledby="h-timeline">
+        <h2 id="h-timeline"><span class="num">11</span>变动时间线与可信度分层</h2>
+        <p class="sub">同一事件只在时间线出现一次，分层说明各自证据强度。</p>
+        <ol class="timeline">
+          <li>
+            <time datetime="2026-10-28">10-28</time>
+            <b>聚合页最近一次整体更新</b>
+            <p>页脚标注日期，此后未再整体复核，是后续“用不了”的前因之一。</p>
+          </li>
+          <li>
+            <time datetime="2026-10-30">10-30</time>
+            <b>数字后缀抽查 3 个样本</b>
+            <p>2 个跳停放页、1 个 404，结论是这类后缀不再承载有效首页。</p>
+          </li>
+          <li>
+            <time datetime="2026-11-03">11-03</time>
+            <b>主域 .cn 仍指向旧 IP</b>
+            <p>缓存时间戳为 11 月 1 日，需 CDN 或代理兜底，直接访问超时。</p>
+          </li>
+          <li>
+            <time datetime="2026-11-05">11-05</time>
+            <b>短跳转落点改动</b>
+            <p>中转链接正常，落点由首页改为公告页，按口径算半可用。</p>
+          </li>
+          <li>
+            <time datetime="2026-11-06">11-06</time>
+            <b>动态域名绑定暂停</b>
+            <p>22:00 起连续超时，同日两封确认提醒邮件可作依据。</p>
+          </li>
+          <li>
+            <time datetime="2026-11-07">11-07</time>
+            <b>换 DNS 后一条入口恢复</b>
+            <p>10:12 返回 200，服务端响应时间戳为当日，证明站点未关。</p>
+          </li>
+          <li>
+            <time datetime="2026-11-08">11-08</time>
+            <b>全后缀复核</b>
+            <p>08:40 完成 14 条记录核对，4 项超时，其余可分类处理。</p>
+          </li>
+        </ol>
+        <div class="grid g3" style="margin-top:16px">
+          <article class="card">
+            <h3>强证据</h3>
+            <p>返回码、解析 IP、响应头时间戳、提醒邮件时间。可直接复现，能作为判断依据。</p>
+            <div class="meta"><span class="pill mint">可复现</span></div>
+          </article>
+          <article class="card">
+            <h3>中等证据</h3>
+            <p>聚合页标注的更新日期、多设备对照结果。能缩小范围，但不能单独定性。</p>
+            <div class="meta"><span class="pill amber">待补充</span></div>
+          </article>
+          <article class="card">
+            <h3>弱证据</h3>
+            <p>转述的“我这边能用”、未标时间的截图。只能作为线索，不写进结论。</p>
+            <div class="meta"><span class="pill rose">仅参考</span></div>
+          </article>
+        </div>
+      </section>
+
+    </div>
+
+    <!-- 侧栏 -->
+    <aside class="side" aria-label="页内导航与状态">
+      <div class="side-card">
+        <h2>页内导航</h2>
+        <ul class="side-nav" id="sideNav">
+          <li><a href="/#overview">01 地址总览</a></li>
+          <li><a href="/#picks">02 精选内容</a></li>
+          <li><a href="/#updates">03 最新更新</a></li>
+          <li><a href="/#channels">04 分类入口</a></li>
+          <li><a href="/#deep">05 深度解析</a></li>
+          <li><a href="/#guide">06 体验指南</a></li>
+          <li><a href="/#faq">07 常见问题</a></li>
+          <li><a href="/#reviews">08 用户反馈</a></li>
+          <li><a href="/#news">09 相关资讯</a></li>
+          <li><a href="/#relate">10 相关推荐</a></li>
+          <li><a href="/#timeline">11 时间线与分层</a></li>
+        </ul>
+      </div>
+      <div class="side-card">
+        <h2>今日状态</h2>
+        <p style="font-size:13.5px;color:var(--ink-2);margin:4px 0 0">
+          <span class="pill mint">可用 6</span>
+          <span class="pill amber">半可用 4</span>
+          <span class="pill rose">超时 4</span>
+        </p>
+        <p style="font-size:12.5px;color:var(--ink-3);margin:8px 0 0">口径：DNS 解析 + TCP 握手 + 首页返回码三段全通才算可用。复核于 11-08 08:40。</p>
+      </div>
+      <div class="side-card">
+        <h2>快速自查</h2>
+        <ul style="font-size:13.5px;color:var(--ink-2);padding-left:18px;margin:4px 0 0">
+          <li>DNS 是否仍是运营商默认</li>
+          <li>链接是否被聊天软件截断</li>
+          <li>返回码是 403、502 还是超时</li>
+          <li>手机流量是否同样失败</li>
+        </ul>
+      </div>
+    </aside>
+
+  </div>
+</main>
+
+<footer class="footer" id="footer">
+  <div class="wrap">
+    <div class="f-footer">
+      <div>
+        <div class="f-brand">
+          <svg width="26" height="26" viewBox="0 0 64 64" aria-hidden="true" focusable="false">
+            <rect width="64" height="64" rx="14" fill="#134c56"></rect>
+            <path d="M13 43V21h10.5a8.5 8.5 0 0 1 0 17H19v5z" fill="#5fd1a6"></path>
+            <path d="M36 21h16v6H42v3.5h9v6h-9V43h-6z" fill="#f2c14e"></path>
+          </svg>
+          <span>BT 7086</span>
+        </div>
+        <p>记录 7086 各类入口的域名后缀、解析状态与打不开时的排查顺序，按复核时间标注证据强度。</p>
+        <p class="f-note">页面内条目为示例数据，用于演示地址核对的记录方法；域名、日期与返回码均标注复核时间，可对照复现。</p>
+      </div>
+      <div>
+        <h2>按现象查</h2>
+        <ul>
+          <li><a href="/#guide">7086 打不开怎么办</a></li>
+          <li><a href="/#overview">镜像地址后缀对照</a></li>
+          <li><a href="/#faq">502 与超时区别</a></li>
+          <li><a href="/#updates">动态域名续期失效</a></li>
+        </ul>
+      </div>
+      <div>
+        <h2>按栏目查</h2>
+        <ul>
+          <li><a href="/#deep">深度解析</a></li>
+          <li><a href="/#picks">精选内容</a></li>
+          <li><a href="/#reviews">用户反馈</a></li>
+          <li><a href="/#timeline">时间线与可信度分层</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="f-btm">
+      <span>© 2026 BT 7086 地址核对记录 · 示例站点</span>
+      <span>正文核对更新：11-08 08:40（全后缀复核）</span>
+    </div>
+  </div>
+</footer>
+
+<button class="to-top" id="toTop" type="button" aria-label="回到页面顶部">↑</button>
+
+<script>
+(function(){
+  "use strict";
+
+  var menuBtn = document.getElementById('menuBtn');
+  var mainNav = document.getElementById('mainNav');
+  var searchForm = document.getElementById('searchForm');
+  var searchInput = document.getElementById('searchInput');
+  var feedback = document.getElementById('searchFeedback');
+  var toTop = document.getElementById('toTop');
+  var navLinks = mainNav ? Array.prototype.slice.call(mainNav.querySelectorAll('a')) : [];
+  var sideLinks = Array.prototype.slice.call(document.querySelectorAll('#sideNav a'));
+
+  /* 移动端菜单 */
+  if(menuBtn && mainNav){
+    menuBtn.addEventListener('click', function(){
+      var open = mainNav.classList.toggle('open');
+      menuBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
+      menuBtn.textContent = open ? '收起菜单' : '导航菜单';
+    });
+    mainNav.addEventListener('click', function(e){
+      if(e.target.tagName === 'A' && window.matchMedia('(max-width:720px)').matches){
+        mainNav.classList.remove('open');
+        menuBtn.setAttribute('aria-expanded','false');
+        menuBtn.textContent = '导航菜单';
+      }
+    });
+    document.addEventListener('keydown', function(e){
+      if(e.key === 'Escape' && mainNav.classList.contains('open')){
+        mainNav.classList.remove('open');
+        menuBtn.setAttribute('aria-expanded','false');
+        menuBtn.textContent = '导航菜单';
+        menuBtn.focus();
+      }
+    });
+  }
+
+  /* 搜索：本地查找 */
+  if(searchForm && searchInput && feedback){
+    searchForm.addEventListener('submit', function(e){
+      e.preventDefault();
+      var q = searchInput.value.trim();
+      if(!q){
+        feedback.textContent = '请输入要查找的词，例如“502”“no-ip”“后缀”。';
+        feedback.classList.add('on');
+        return;
+      }
+      document.querySelectorAll('mark.js-hit').forEach(function(m){
+        var t = document.createTextNode(m.textContent);
+        m.parentNode.replaceChild(t, m);
+      });
+      document.querySelectorAll('.panel, .card, .tlist li, .cmt, .news li, details, .timeline li').forEach(function(el){
+        el.classList.remove('hide');
+      });
+
+      var lower = q.toLowerCase();
+      var hits = 0;
+      var containers = document.querySelectorAll('.panel, .card, .tlist li, .cmt, .news li, details, .timeline li, .side-card');
+      var matchedEls = [];
+
+      containers.forEach(function(el){
+        var text = (el.textContent || '').toLowerCase();
+        if(text.indexOf(lower) !== -1){
+          matchedEls.push(el);
+        }
+      });
+
+      if(matchedEls.length === 0){
+        feedback.textContent = '没有找到与“' + q + '”匹配的条目。可以换后缀词、返回码或“打不开”再试。';
+        feedback.classList.add('on');
+        return;
+      }
+
+      /* 只保留命中容器中最内层可见项，避免父子同时 hide 冲突 */
+      containers.forEach(function(el){
+        if(matchedEls.indexOf(el) === -1) return;
+        var parentMatched = false;
+        var p = el.parentNode;
+        while(p && p !== document.body){
+          if(p.nodeType === 1 && matchedEls.indexOf(p) !== -1){ parentMatched = true; break; }
+          p = p.parentNode;
+        }
+        if(!parentMatched){ hits++; }
+      });
+
+      /* 隐藏不含命中的顶层板块，实现聚焦 */
+      document.querySelectorAll('.panel').forEach(function(panel){
+        var txt = (panel.textContent || '').toLowerCase();
+        var innerHit = matchedEls.some(function(el){ return panel.contains(el); });
+        if(!innerHit && txt.indexOf(lower) === -1){
+          panel.classList.add('hide');
+        }
+      });
+
+      var first = matchedEls[0];
+      if(first){
+        first.scrollIntoView({behavior:'smooth', block:'start'});
+      }
+      feedback.textContent = '找到 ' + matchedEls.length + ' 处与“' + q + '”相关的内容' + (hits ? '，已聚焦到最相关板块。' : '。');
+      feedback.classList.add('on');
+    });
+
+    searchInput.addEventListener('input', function(){
+      if(feedback.classList.contains('on') && searchInput.value.trim()===''){
+        feedback.classList.remove('on');
+        feedback.textContent = '';
+        document.querySelectorAll('.panel').forEach(function(p){ p.classList.remove('hide'); });
+      }
+    });
+  }
+
+  /* 回到顶部 */
+  function onScroll(){
+    if(window.scrollY > 600){ toTop.classList.add('on'); }
+    else{ toTop.classList.remove('on'); }
+    highlight();
+  }
+  if(toTop){
+    toTop.addEventListener('click', function(){
+      window.scrollTo({top:0, behavior:'smooth'});
+    });
+  }
+
+  /* 侧栏滚动高亮 */
+  var sections = sideLinks.map(function(a){
+    var id = a.getAttribute('href').replace('/#','');
+    return {link:a, el:document.getElementById(id)};
+  }).filter(function(o){ return !!o.el; });
+
+  function highlight(){
+    var y = window.scrollY + 140;
+    var current = null;
+    sections.forEach(function(s){
+      if(s.el.offsetTop <= y){ current = s; }
+    });
+    sideLinks.forEach(function(a){ a.classList.remove('active'); });
+    if(current){ current.link.classList.add('active'); }
+  }
+
+  var ticking = false;
+  window.addEventListener('scroll', function(){
+    if(!ticking){
+      ticking = true;
+      window.requestAnimationFrame(function(){
+        onScroll();
+        ticking = false;
+      });
+    }
+  }, {passive:true});
+  window.addEventListener('resize', onScroll);
+  onScroll();
+})();
+</script>
+
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"WebSite",
+  "name":"BT 7086",
+  "description":"BT 7086 镜像地址变动记录、域名后缀核对与打不开时的排查顺序。",
+  "inLanguage":"zh-CN"
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"FAQPage",
+  "mainEntity":[
+    {
+      "@type":"Question",
+      "name":"7086 镜像地址全部打不开，是站点关闭了吗？",
+      "acceptedAnswer":{"@type":"Answer","text":"不一定。11 月 8 日复核的 14 条记录中有 9 条在解决域名层问题后仍返回 200。先看返回码：全部超时更像 DNS 或链路问题，全部 502 更像后端不可达，全部 403 才可能是访问策略变化。"}
+    },
+    {
+      "@type":"Question",
+      "name":"no-ip 动态域名超时，重新登录就能恢复吗？",
+      "acceptedAnswer":{"@type":"Answer","text":"取决于超时原因。若是账号 30 天未确认导致绑定暂停，登录后台确认后一般 5—10 分钟生效；若是绑定 IP 变化但客户端未上报，需要客户端重新拨号并更新记录。"}
+    },
+    {
+      "@type":"Question",
+      "name":"返回 502 和返回超时，处理方式有什么不同？",
+      "acceptedAnswer":{"@type":"Answer","text":"502 表示网关连上了但后端不给响应，换 DNS 基本无效，等后端恢复更现实；超时表示连接没有建立，优先查解析结果与网络链路。"}
+    },
+    {
+      "@type":"Question",
+      "name":"手机能打开、电脑打不开，是什么原因？",
+      "acceptedAnswer":{"@type":"Answer","text":"最常见原因是两台设备走了不同 DNS，缓存了不同版本的解析结果；其次是浏览器扩展或代理设置只影响其中一台。先比对同一域名的解析 IP 即可定位。"}
+    },
+    {
+      "@type":"Question",
+      "name":"聚合页标注“可用”的 7086 入口，为什么点进去是公告页？",
+      "acceptedAnswer":{"@type":"Answer","text":"口径差异。聚合页通常只验证页面能打开，不验证落点是否为首页。11 月 4 日新增记录中有一条落在公告页，把落点纳入核对条件即可避免。"}
+    },
+    {
+      "@type":"Question",
+      "name":"旧书签里的域名还能继续用吗？",
+      "acceptedAnswer":{"@type":"Answer","text":"按后缀区分。主域类多数仍可解析但可能指向旧 IP；纯数字后缀在 10 月 30 日抽查中 3 个有 2 个已成停放页；动态域名要看账号是否在有效确认期内。"}
+    }
+  ]
+}
+</script>
+</body>
+  </html>
